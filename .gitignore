@@ -1,0 +1,63 @@
+####################################
+# OS / System
+####################################
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+*.swp
+
+####################################
+# IDE / Editors
+####################################
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+####################################
+# Environment variables
+####################################
+.env
+.env.*
+!*.example
+
+####################################
+# Flutter / Dart
+####################################
+novel_app/.dart_tool/
+novel_app/.flutter-plugins
+novel_app/.flutter-plugins-dependencies
+novel_app/.pub-cache/
+novel_app/build/
+
+####################################
+# Flutter platform builds
+####################################
+novel_app/android/.gradle/
+novel_app/android/app/build/
+novel_app/ios/Flutter/ephemeral/
+novel_app/linux/flutter/ephemeral/
+novel_app/macos/Flutter/ephemeral/
+novel_app/windows/flutter/ephemeral/
+
+####################################
+# Node.js / NestJS backend
+####################################
+webnovels_server/node_modules/
+webnovels_server/dist/
+webnovels_server/uploads/
+webnovels_server/*.log
+
+####################################
+# Prisma
+####################################
+webnovels_server/prisma/migrations/
+
+####################################
+# Misc
+####################################
+.history/
+.svn/
+.swiftpm/

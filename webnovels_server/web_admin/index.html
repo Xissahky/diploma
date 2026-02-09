@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Webnovels Admin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- React + ReactDOM + Babel -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f3f4f6;
+      color: #111827;
+    }
+    .app-root {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+    .login-card {
+      max-width: 420px;
+      margin: 80px auto;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 6px 8px;
+      border-radius: 6px;
+      border: 1px solid #d1d5db;
+      font-size: 14px;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 1px #2563eb33;
+    }
+    label {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 4px;
+      color: #6b7280;
+    }
+    button {
+      cursor: pointer;
+      border-radius: 6px;
+      border: none;
+      padding: 8px 14px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    button.primary {
+      background: #2563eb;
+      color: white;
+    }
+    button.primary:disabled {
+      background: #9ca3af;
+      cursor: default;
+    }
+    button.outline {
+      border: 1px solid #d1d5db;
+      background: white;
+      color: #374151;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    th, td {
+      border-bottom: 1px solid #e5e7eb;
+      padding: 8px 6px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: #f9fafb;
+      font-weight: 600;
+      font-size: 12px;
+      text-transform: uppercase;
+      color: #6b7280;
+    }
+    tr:hover {
+      background: #f3f4ff;
+    }
+    .badge {
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 500;
+    }
+    .badge-open { background: #fee2e2; color: #b91c1c; }
+    .badge-in_review { background: #fef3c7; color: #92400e; }
+    .badge-resolved { background: #dcfce7; color: #166534; }
+    .badge-rejected { background: #e5e7eb; color: #374151; }
+    .chip {
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 8px;
+      background: #e5e7eb;
+      font-size: 11px;
+    }
+    .muted {
+      color: #6b7280;
+      font-size: 12px;
+    }
+    .error-text {
+      color: #b91c1c;
+      font-size: 13px;
+      margin-top: 6px;
+    }
+    .header-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .header-bar h1, .header-bar h2 {
+      margin: 0;
+    }
+    pre {
+      background: #f9fafb;
+      padding: 8px;
+      border-radius: 8px;
+      font-size: 12px;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+  <div id="root" class="app-root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    // === API BASE ===
+    const API_BASE = "http://localhost:3000"; // поменяй при необходимости
+
+    // === UTILS ===
+    function statusBadge(status) {
+      if (!status) return null;
+      const lower = status.toLowerCase();
+      return (
+        <span className={"badge badge-" + lower.replace(" ", "_")}>
+          {status}
+        </span>
+      );
+    }
+
+    function formatDate(iso) {
+      if (!iso) return "";
+      const d = new Date(iso);
+      if (isNaN(d.getTime())) return iso;
+      return d.toLocaleString();
+    }
+
+    // === LOGIN VIEW ===
+    function LoginView({ onLoginSuccess }) {
+      const [email, setEmail] = useState("");
+      const [password, setPassword] = useState("");
+      const [loading, setLoading] = useState(false);
+      const [error, setError] = useState("");
+
+      async function handleLogin(e) {
+        e.preventDefault();
+        setError("");
+        setLoading(true);
+        try {
+          const res = await fetch(API_BASE + "/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }),
+          });
+          if (!res.ok) {
+            const text = await res.text();
+            throw new Error(text || "Login failed");
+          }
+          const data = await res.json();
+          const token = data.access_token;
+          const user = data.user;
+          if (!user || user.role !== "admin") {
+            throw new Error("User is not admin");
+          }
+          localStorage.setItem("admin_token", token);
+          localStorage.setItem("admin_user", JSON.stringify(user));
+          onLoginSuccess(token, user);
+        } catch (e) {
+          console.error(e);
+          setError(e.message || "Login error");
+        } finally {
+          setLoading(false);
+        }
+      }
+
+      return (
+        <div className="login-card card">
+          <h2 style={{ marginTop: 0, marginBottom: 8 }}>Admin Login</h2>
+          <p className="muted" style={{ marginTop: 0, marginBottom: 16 }}>
+            Войдите как администратор (роль <code>admin</code>).
+          </p>
+          <form onSubmit={handleLogin}>
+            <div style={{ marginBottom: 10 }}>
+              <label>Email</label>
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                placeholder="admin@example.com"
+              />
+            </div>
+            <div style={{ marginBottom: 10 }}>
+              <label>Password</label>
+              <input
+                type="password"
+                required
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+              />
+            </div>
+            {error && <div className="error-text">{error}</div>}
+            <div style={{ marginTop: 12, display: "flex", justifyContent: "flex-end" }}>
+              <button type="submit" className="primary" disabled={loading}>
+                {loading ? "Logging in..." : "Login"}
+              </button>
+            </div>
+          </form>
+        </div>
+      );
+    }
+
+    // === REPORTS LIST (только активные) ===
+    function ReportsList({ token, onSelectReport }) {
+      const [reports, setReports] = useState([]);
+      const [loading, setLoading] = useState(false);
+      const [error, setError] = useState("");
+
+      useEffect(() => {
+        if (!token) return;
+        loadReports();
+      }, [token]);
+
+      async function loadReports() {
+        setError("");
+        setLoading(true);
+        try {
+          // Берём ВСЕ и фильтруем активные (OPEN + IN_REVIEW)
+          const res = await fetch(API_BASE + "/reports/admin", {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          });
+          if (!res.ok) {
+            throw new Error("Failed to load reports: " + res.status);
+          }
+          const data = await res.json();
+          const all = Array.isArray(data) ? data : [];
+          const active = all.filter(r =>
+            r.status === "OPEN" || r.status === "IN_REVIEW"
+          );
+          setReports(active);
+        } catch (e) {
+          console.error(e);
+          setError(e.message || "Error loading reports");
+        } finally {
+          setLoading(false);
+        }
+      }
+
+      return (
+        <div className="card">
+          <div className="header-bar">
+            <div>
+              <h2 style={{ margin: 0, fontSize: 18 }}>Active reports</h2>
+              <p className="muted" style={{ margin: 0 }}>
+                Показаны только активные репорты (OPEN, IN_REVIEW).
+              </p>
+            </div>
+            <button className="outline" onClick={loadReports} disabled={loading}>
+              {loading ? "Refreshing..." : "Refresh"}
+            </button>
+          </div>
+          {error && <div className="error-text">{error}</div>}
+          {loading ? (
+            <p className="muted">Loading...</p>
+          ) : reports.length === 0 ? (
+            <p className="muted">Активных репортов нет.</p>
+          ) : (
+            <div style={{ maxHeight: "70vh", overflowY: "auto" }}>
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Type</th>
+                    <th>Target ID</th>
+                    <th>Reason</th>
+                    <th>Status</th>
+                    <th>Reporter</th>
+                    <th>Created</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {reports.map(r => (
+                    <tr
+                      key={r.id}
+                      onClick={() => onSelectReport(r.id)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <td style={{ fontFamily: "monospace", fontSize: 11 }}>{r.id}</td>
+                      <td><span className="chip">{r.targetType}</span></td>
+                      <td style={{ fontFamily: "monospace", fontSize: 11 }}>{r.targetId}</td>
+                      <td>{r.reason}</td>
+                      <td>{statusBadge(r.status)}</td>
+                      <td>
+                        {r.reporter
+                          ? `${r.reporter.displayName || ""} (${r.reporter.email || ""})`
+                          : "—"}
+                      </td>
+                      <td>{formatDate(r.createdAt)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    // === REPORT DETAIL FULL SCREEN ===
+    function ReportDetail({ token, reportId, onBack }) {
+      const [data, setData] = useState(null); // { report, target }
+      const [loading, setLoading] = useState(false);
+      const [error, setError] = useState("");
+      const [status, setStatus] = useState("RESOLVED");
+      const [action, setAction] = useState("none");
+      const [note, setNote] = useState("");
+      const [saving, setSaving] = useState(false);
+
+      useEffect(() => {
+        if (!token || !reportId) return;
+        loadDetail();
+      }, [token, reportId]);
+
+      async function loadDetail() {
+        setError("");
+        setLoading(true);
+        try {
+          const res = await fetch(API_BASE + "/reports/admin/" + reportId, {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          });
+          if (!res.ok) {
+            throw new Error("Failed to load report: " + res.status);
+          }
+          const d = await res.json();
+          setData(d);
+          if (d.report?.status) setStatus(d.report.status);
+          if (d.report?.adminNote) setNote(d.report.adminNote);
+        } catch (e) {
+          console.error(e);
+          setError(e.message || "Error loading report");
+        } finally {
+          setLoading(false);
+        }
+      }
+
+      async function handleSave() {
+        setSaving(true);
+        setError("");
+        try {
+          const res = await fetch(API_BASE + "/reports/admin/" + reportId, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+            body: JSON.stringify({
+              status,
+              action,
+              adminNote: note || null,
+            }),
+          });
+          if (!res.ok) {
+            const text = await res.text();
+            throw new Error(text || "Failed to update");
+          }
+          const updated = await res.json();
+          setData(prev => prev ? { ...prev, report: updated } : prev);
+          alert("Report updated");
+        } catch (e) {
+          console.error(e);
+          setError(e.message || "Error updating report");
+        } finally {
+          setSaving(false);
+        }
+      }
+
+      if (!reportId) return null;
+
+      return (
+        <div className="card">
+          <div className="header-bar">
+            <div>
+              <h2 style={{ margin: 0, fontSize: 18 }}>Report details</h2>
+              <p className="muted" style={{ margin: 0 }}>
+                ID: <code>{reportId}</code>
+              </p>
+            </div>
+            <div style={{ display: "flex", gap: 8 }}>
+              <button className="outline" onClick={onBack}>← Back to list</button>
+              <button className="outline" disabled={loading} onClick={loadDetail}>
+                {loading ? "Refreshing..." : "Refresh"}
+              </button>
+            </div>
+          </div>
+
+          {loading && !data && <p className="muted">Loading...</p>}
+          {error && <div className="error-text">{error}</div>}
+          {!loading && !data && !error && (
+            <p className="muted">No data</p>
+          )}
+
+          {data && (
+            <>
+              <div style={{ marginBottom: 12 }}>
+                <h3 style={{ marginBottom: 4, fontSize: 14 }}>Report info</h3>
+                <p className="muted">
+                  Type: <strong>{data.report.targetType}</strong><br />
+                  Reason: <strong>{data.report.reason}</strong><br />
+                  Status: {statusBadge(data.report.status)}<br />
+                  Created: {formatDate(data.report.createdAt)}<br />
+                  Reporter:{" "}
+                  {data.report.reporter
+                    ? `${data.report.reporter.displayName || ""} (${data.report.reporter.email || ""})`
+                    : "—"}
+                </p>
+                <p>
+                  <strong>User description:</strong><br />
+                  {data.report.description || <span className="muted">No description</span>}
+                </p>
+                {data.report.admin && (
+                  <p className="muted">
+                    Last handled by: {data.report.admin.displayName} ({data.report.admin.email})
+                  </p>
+                )}
+              </div>
+
+              <div style={{ marginBottom: 12 }}>
+                <h3 style={{ marginBottom: 4, fontSize: 14 }}>Target content</h3>
+                {data.report.targetType === "COMMENT" && data.target && (
+                  <div>
+                    <p className="muted">
+                      Comment ID: <code>{data.target.id}</code><br />
+                      Author ID: <code>{data.target.authorId}</code>
+                    </p>
+                    <pre>{data.target.content}</pre>
+                  </div>
+                )}
+                {data.report.targetType === "CHAPTER" && data.target && (
+                  <div>
+                    <p className="muted">
+                      Chapter ID: <code>{data.target.id}</code><br />
+                      Novel ID: <code>{data.target.novelId}</code>
+                    </p>
+                    <p><strong>{data.target.title}</strong></p>
+                    <pre>{(data.target.content || "").slice(0, 2000)}</pre>
+                  </div>
+                )}
+                {!data.target && (
+                  <p className="muted">
+                    Контент не найден (возможно уже удалён).
+                  </p>
+                )}
+              </div>
+
+              <div style={{ marginBottom: 12 }}>
+                <h3 style={{ marginBottom: 4, fontSize: 14 }}>Admin action</h3>
+                <div style={{ display: "flex", gap: 12, marginBottom: 8 }}>
+                  <div style={{ flex: 1 }}>
+                    <label>Status</label>
+                    <select value={status} onChange={e => setStatus(e.target.value)}>
+                      <option value="OPEN">OPEN</option>
+                      <option value="IN_REVIEW">IN_REVIEW</option>
+                      <option value="RESOLVED">RESOLVED</option>
+                      <option value="REJECTED">REJECTED</option>
+                    </select>
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <label>Action</label>
+                    <select value={action} onChange={e => setAction(e.target.value)}>
+                      <option value="none">Do nothing</option>
+                      <option value="delete_content">Delete content</option>
+                      <option value="ban_user">Ban author (if implemented)</option>
+                    </select>
+                  </div>
+                </div>
+                <div>
+                  <label>Admin note</label>
+                  <textarea
+                    rows={3}
+                    value={note}
+                    onChange={e => setNote(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              <div style={{ display: "flex", justifyContent: "flex-end", gap: 8 }}>
+                <button className="primary" onClick={handleSave} disabled={saving}>
+                  {saving ? "Saving..." : "Apply changes"}
+                </button>
+              </div>
+            </>
+          )}
+        </div>
+      );
+    }
+
+    // === ROOT APP ===
+    function App() {
+      const [token, setToken] = useState(null);
+      const [user, setUser] = useState(null);
+      const [selectedReportId, setSelectedReportId] = useState(null);
+
+      useEffect(() => {
+        const t = localStorage.getItem("admin_token");
+        const u = localStorage.getItem("admin_user");
+        if (t && u) {
+          try {
+            const parsed = JSON.parse(u);
+            if (parsed.role === "admin") {
+              setToken(t);
+              setUser(parsed);
+            }
+          } catch (_) {}
+        }
+      }, []);
+
+      function handleLogout() {
+        localStorage.removeItem("admin_token");
+        localStorage.removeItem("admin_user");
+        setToken(null);
+        setUser(null);
+        setSelectedReportId(null);
+      }
+
+      if (!token || !user) {
+        return <LoginView onLoginSuccess={(t, u) => { setToken(t); setUser(u); }} />;
+      }
+
+      return (
+        <div>
+          <div className="header-bar" style={{ marginBottom: 16 }}>
+            <div>
+              <h1 style={{ margin: 0, fontSize: 22 }}>Webnovels Admin Panel</h1>
+              <p className="muted" style={{ margin: 0 }}>
+                Logged in as <strong>{user.displayName}</strong> ({user.email})
+              </p>
+            </div>
+            <button className="outline" onClick={handleLogout}>Logout</button>
+          </div>
+
+          {!selectedReportId && (
+            <ReportsList
+              token={token}
+              onSelectReport={id => setSelectedReportId(id)}
+            />
+          )}
+
+          {selectedReportId && (
+            <ReportDetail
+              token={token}
+              reportId={selectedReportId}
+              onBack={() => setSelectedReportId(null)}
+            />
+          )}
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App />);
+  </script>
+</body>
+</html>

@@ -1,0 +1,240 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String            @id @default(cuid())
+  email          String            @unique
+  createdAt      DateTime          @default(now())
+  displayName    String
+  passwordHash   String
+  role           Role              @default(user)
+  avatarUrl      String?
+  bio            String?
+  preferences    Json?
+  comments       Comment[]
+  library        LibraryEntry[]
+  notifications  Notification[]
+  novels         Novel[]
+  novelViews     NovelView[]
+  handledReports Report[]          @relation("ReportsHandledByAdmin")
+  reports        Report[]          @relation("ReportsByUser")
+  achievements   UserAchievement[]
+  ratings        UserRating[]
+}
+
+model Novel {
+  id             String         @id @default(cuid())
+  title          String
+  description    String
+  coverUrl       String?
+  createdAt      DateTime       @default(now())
+  authorId       String
+  updatedAt      DateTime       @updatedAt
+  rating         Float          @default(0.0)
+  chapters       Chapter[]
+  comments       Comment[]
+  libraryEntries LibraryEntry[]
+  author         User           @relation(fields: [authorId], references: [id])
+  tags           NovelTag[]
+  views          NovelView[]
+  ratings        UserRating[]
+}
+
+model NovelView {
+  id        String   @id @default(cuid())
+  novelId   String
+  userId    String?
+  createdAt DateTime @default(now())
+  novel     Novel    @relation(fields: [novelId], references: [id])
+  user      User?    @relation(fields: [userId], references: [id])
+
+  @@index([novelId, createdAt])
+  @@index([userId, createdAt])
+}
+
+model Chapter {
+  id                 String               @id @default(cuid())
+  title              String
+  content            String
+  createdAt          DateTime             @default(now())
+  novelId            String
+  novel              Novel                @relation(fields: [novelId], references: [id])
+  ChapterTranslation ChapterTranslation[]
+  comments           Comment[]
+}
+
+model ChapterTranslation {
+  id         String   @id @default(dbgenerated("concat('ct_', substr(md5((random())::text), 1, 24))"))
+  chapterId  String
+  targetLang String
+  text       String
+  createdAt  DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt  DateTime @default(now()) @updatedAt @db.Timestamptz(6)
+  chapter    Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "ChapterTranslation_chapter_fkey")
+
+  @@unique([chapterId, targetLang], map: "ChapterTranslation_chapterId_targetLang_unique")
+  @@index([chapterId], map: "ChapterTranslation_chapter_idx")
+  @@index([targetLang], map: "ChapterTranslation_lang_idx")
+}
+
+model Tag {
+  id     String     @id @default(dbgenerated("gen_random_uuid()"))
+  name   String     @unique
+  novels NovelTag[]
+}
+
+model NovelTag {
+  novelId String
+  tagId   String
+  novel   Novel  @relation(fields: [novelId], references: [id], onDelete: Cascade)
+  tag     Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([novelId, tagId])
+}
+
+model Comment {
+  id        String    @id @default(dbgenerated("gen_random_uuid()"))
+  content   String
+  createdAt DateTime  @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime  @default(now()) @updatedAt @db.Timestamptz(6)
+  authorId  String
+  novelId   String?
+  chapterId String?
+  parentId  String?
+  author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade, map: "comment_author_fkey")
+  chapter   Chapter?  @relation(fields: [chapterId], references: [id], onDelete: Cascade, map: "comment_chapter_fkey")
+  novel     Novel?    @relation(fields: [novelId], references: [id], onDelete: Cascade, map: "comment_novel_fkey")
+  parent    Comment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade, map: "comment_parent_fkey")
+  replies   Comment[] @relation("CommentReplies")
+
+  @@index([novelId])
+  @@index([chapterId])
+  @@index([parentId])
+}
+
+model LibraryEntry {
+  id        String        @id @default(dbgenerated("gen_random_uuid()"))
+  userId    String
+  novelId   String
+  status    LibraryStatus
+  favorite  Boolean?      @default(false)
+  progress  Int?          @default(0)
+  createdAt DateTime?     @default(now()) @db.Timestamp(6)
+  updatedAt DateTime?     @default(now()) @updatedAt @db.Timestamp(6)
+  novel     Novel         @relation(fields: [novelId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "LibraryEntry_novel_fkey")
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "LibraryEntry_user_fkey")
+
+  @@unique([userId, novelId], map: "LibraryEntry_userId_novelId_unique")
+  @@index([userId, status])
+  @@index([novelId])
+}
+
+model UserRating {
+  id        String    @id @default(dbgenerated("gen_random_uuid()"))
+  userId    String
+  novelId   String
+  value     Int
+  createdAt DateTime? @default(now()) @db.Timestamp(6)
+  updatedAt DateTime? @default(now()) @updatedAt @db.Timestamp(6)
+  novel     Novel     @relation(fields: [novelId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "UserRating_novel_fkey")
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "UserRating_user_fkey")
+
+  @@unique([userId, novelId], map: "UserRating_userId_novelId_unique")
+  @@index([novelId])
+}
+
+model Achievement {
+  id          String            @id @default(dbgenerated("gen_random_uuid()"))
+  code        String            @unique
+  title       String
+  description String
+  points      Int?              @default(0)
+  createdAt   DateTime?         @default(now()) @db.Timestamp(6)
+  users       UserAchievement[]
+}
+
+model UserAchievement {
+  userId        String
+  achievementId String
+  earnedAt      DateTime?   @default(now()) @db.Timestamp(6)
+  achievement   Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "UserAchievement_achievement_fkey")
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "UserAchievement_user_fkey")
+
+  @@id([userId, achievementId])
+  @@index([userId])
+}
+
+model Notification {
+  id        String           @id @default(dbgenerated("gen_random_uuid()"))
+  userId    String
+  type      NotificationType
+  payload   Json             @default("{}")
+  isRead    Boolean?         @default(false)
+  createdAt DateTime?        @default(now()) @db.Timestamp(6)
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "Notification_user_fkey")
+
+  @@index([userId, isRead, createdAt])
+  @@index([userId, createdAt])
+}
+
+model Report {
+  id          String           @id @default(cuid())
+  targetType  ReportTargetType
+  targetId    String
+  reason      ReportReason
+  description String?
+  status      ReportStatus     @default(OPEN)
+  reporterId  String
+  adminId     String?
+  adminNote   String?
+  createdAt   DateTime?        @default(now()) @db.Timestamp(6)
+  updatedAt   DateTime?        @default(now()) @updatedAt @db.Timestamp(6)
+  admin       User?            @relation("ReportsHandledByAdmin", fields: [adminId], references: [id])
+  reporter    User             @relation("ReportsByUser", fields: [reporterId], references: [id])
+}
+
+enum Role {
+  user
+  admin
+}
+
+enum LibraryStatus {
+  READING
+  PLANNED
+  DROPPED
+  COMPLETED
+  ON_HOLD
+}
+
+enum NotificationType {
+  CHAPTER_PUBLISHED
+  COMMENT_REPLY
+  ACHIEVEMENT_UNLOCKED
+}
+
+enum ReportTargetType {
+  COMMENT
+  CHAPTER
+}
+
+enum ReportStatus {
+  OPEN
+  IN_REVIEW
+  RESOLVED
+  REJECTED
+}
+
+enum ReportReason {
+  SPAM
+  HATE
+  NSFW
+  SPOILER
+  OFFTOPIC
+  OTHER
+}

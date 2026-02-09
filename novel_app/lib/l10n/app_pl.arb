@@ -1,0 +1,241 @@
+{
+  "@@locale": "pl",
+  "appTitle": "Aplikacja do nowel",
+  "settings": "Ustawienia",
+  "theme": "Motyw",
+  "language": "Język",
+  "light": "Jasny",
+  "dark": "Ciemny",
+  "system": "Systemowy",
+  "polish": "Polski",
+  "english": "Angielski",
+
+  "myProfile": "Mój profil",
+  "tabLibrary": "Biblioteka",
+  "tabInfo": "Informacje",
+  "tabAchievements": "Osiągnięcia",
+
+  "editProfileTitle": "Edytuj profil",
+  "displayNameLabel": "Wyświetlana nazwa",
+  "bioLabel": "Opis",
+  "uploadAvatar": "Prześlij avatar",
+  "profileUpdated": "Profil zaktualizowany!",
+  "saveButton": "Zapisz",
+  "loggedOut": "Wylogowano",
+  "logOut": "Wyloguj się",
+  "noUserData": "Brak danych użytkownika",
+
+  "changePasswordTitle": "Zmień hasło",
+  "currentPasswordLabel": "Obecne hasło",
+  "enterCurrentPassword": "Wpisz obecne hasło",
+  "newPasswordLabel": "Nowe hasło",
+  "minPasswordLength": "Minimum 6 znaków",
+  "repeatNewPasswordLabel": "Powtórz nowe hasło",
+  "passwordsDoNotMatch": "Hasła nie są takie same",
+  "passwordChanged": "Hasło zostało zmienione",
+
+  "darkTheme": "Ciemny motyw",
+
+  "noAchievementsDefined": "Brak zdefiniowanych osiągnięć",
+  "achievementDefaultTitle": "Osiągnięcie",
+  "pointsShort": "pkt",
+
+  "libStatusAll": "Wszystkie",
+  "libStatusReading": "Czytam",
+  "libStatusPlanned": "Planowane",
+  "libStatusOnHold": "Wstrzymane",
+  "libStatusDropped": "Porzucone",
+  "libStatusCompleted": "Ukończone",
+  "libStatusFavorites": "Ulubione",
+
+  "noNovelsInCategory": "Brak powieści w tej kategorii",
+  "untitledNovel": "Bez tytułu",
+  "unknownAuthor": "Nieznany autor",
+
+
+
+  "notificationsTitleUnread": "Powiadomienia • Nieprzeczytane",
+  "notificationsTitleAll": "Powiadomienia • Wszystkie",
+  "notificationsFilterUnread": "Nieprzeczytane",
+  "notificationsFilterAll": "Wszystkie",
+  "notificationsMarkAllTooltip": "Oznacz wszystkie jako przeczytane",
+  "notificationsAllReadTooltip": "Wszystko przeczytane",
+  "noNotifications": "Brak powiadomień",
+
+  "notificationNewChapterPrefix": "Nowy rozdział",
+  "notificationDefaultNovelTitle": "Powieść",
+  "notificationDefaultChapterTitle": "Nowy rozdział",
+  "notificationReplySuffix": "odpowiedział(a)",
+  "notificationReplyDefaultText": "odpowiedział(a) na twój komentarz",
+  "notificationAchievementUnlockedTitle": "Odblokowano osiągnięcie",
+  "notificationDefaultTitle": "Powiadomienie",
+
+  "notificationReadButton": "Przeczytane",
+  "notificationMarkAsReadButton": "Oznacz jako przeczytane",
+
+  "notificationMissingIds": "Brak identyfikatora powieści/rozdziału w powiadomieniu",
+  "notificationFailedLoadNovel": "Nie udało się wczytać powieści",
+  "notificationChapterNotFound": "Nie znaleziono rozdziału w powieści",
+
+  "failedPrefix": "Błąd",
+  "openErrorPrefix": "Błąd otwierania",
+  "errorPrefix": "Błąd",
+
+
+
+  "createTitle": "Dodaj",
+  "createModeNovel": "Powieść",
+  "createModeChapter": "Rozdział",
+  "createNovelButton": "Utwórz powieść",
+  "addChapterButton": "Dodaj rozdział",
+
+  "novelTitleLabel": "Tytuł",
+  "novelTitleHint": "\"Tytuł powieści\"",
+  "novelDescriptionLabel": "Opis",
+  "novelDescriptionHint": "Krótki opis fabuły",
+
+  "uploadCoverButton": "Prześlij okładkę",
+  "tagsLabel": "Tagi",
+  "noTags": "Brak tagów",
+  "noTagsSelected": "Nie wybrano tagów",
+  "tagsSelectedPrefix": "Wybrane:",
+
+  "selectNovelTitle": "Wybierz powieść",
+  "searchNovelHint": "Szukaj powieści po tytule...",
+  "selectedNovelSubtitle": "Wybrana powieść",
+  "resultsTitle": "Wyniki",
+
+  "chapterTitleLabel": "Tytuł rozdziału",
+  "chapterTitleHint": "\"Nazwa rozdziału\" | numer",
+  "chapterContentLabel": "Treść",
+  "chapterContentHint": "Wklej tutaj tekst rozdziału",
+
+  "tagsLoadFailedPrefix": "Nie udało się wczytać tagów",
+  "coverUploaded": "Okładka przesłana",
+  "uploadFailedPrefix": "Błąd wysyłania",
+  "searchFailedPrefix": "Błąd wyszukiwania",
+
+  "novelFillTitleAndDescription": "Uzupełnij tytuł i opis",
+  "novelCreated": "Powieść została utworzona",
+  "createNovelFailedPrefix": "Nie udało się utworzyć powieści",
+
+  "pickNovelFirst": "Najpierw wybierz powieść",
+  "chapterFillTitleAndContent": "Uzupełnij tytuł i treść rozdziału",
+  "chapterAdded": "Rozdział dodany",
+  "addChapterFailedPrefix": "Nie udało się dodać rozdziału",
+
+
+
+  "mustBeLoggedInToComment": "Musisz być zalogowany, aby komentować",
+  "mustBeLoggedInToReport": "Musisz być zalogowany, aby zgłaszać",
+  "unknownUser": "Nieznany użytkownik",
+  "noContentAvailable": "Brak dostępnej treści",
+
+  "translatedToPrefix": "Przetłumaczono na",
+  "translatingToPrefix": "Tłumaczenie na",
+  "emptyTranslation": "Otrzymano pusty wynik tłumaczenia",
+  "translationFailedPrefix": "Błąd tłumaczenia",
+  "translationErrorPrefix": "Błąd tłumaczenia",
+
+  "chapterListTitle": "Lista rozdziałów",
+  "chapterWord": "Rozdział",
+
+  "readingSettingsTitle": "Ustawienia czytania",
+  "fontSizeLabel": "Rozmiar czcionki",
+  "translationSectionTitle": "Tłumaczenie",
+  "targetLanguageLabel": "Język docelowy",
+  "showTranslatedText": "Pokazuj tłumaczenie",
+  "translateNowButton": "Przetłumacz teraz",
+  "showingPrefix": "Wyświetlane:",
+  "themeLabel": "Motyw",
+  "lineHeightLabel": "Wysokość linii",
+  "comingSoon": "Wkrótce",
+  "closeButton": "Zamknij",
+
+  "chapterReported": "Rozdział został zgłoszony",
+  "commentReported": "Komentarz został zgłoszony",
+
+  "unknownNovel": "Nieznana powieść",
+  "noChapters": "Brak rozdziałów",
+
+  "chaptersTooltip": "Rozdziały",
+  "textSettingsTooltip": "Ustawienia tekstu",
+  "reportChapterTooltip": "Zgłoś rozdział",
+  "reportCommentTooltip": "Zgłoś komentarz",
+
+  "previousChapter": "Poprzedni rozdział",
+  "noPreviousChapter": "Brak poprzedniego rozdziału",
+  "nextChapter": "Następny rozdział",
+  "backToNovel": "Powrót do powieści",
+
+  "commentsTitle": "Komentarze",
+  "noCommentsYet": "Brak komentarzy",
+  "writeCommentHint": "Napisz komentarz...",
+  "loginToComment": "Zaloguj się, aby komentować",
+
+
+
+  "searchTitle": "Szukaj powieści",
+  "searchEnterTitleLabel": "Wpisz tytuł powieści...",
+  "searchErrorPrefix": "Błąd",
+  "searchFailedPrefix": "Niepowodzenie",
+
+  "showFiltersTooltip": "Pokaż filtry",
+  "hideFiltersTooltip": "Ukryj filtry",
+
+  "searchMatchLabel": "Dopasowanie:",
+  "searchMatchAny": "Dowolny",
+  "searchMatchAll": "Wszystkie",
+  "searchApplyFilters": "Zastosuj",
+
+  "searchNoResultsYet": "Brak wyników",
+  "searchUnknownAuthor": "Nieznany autor",
+
+
+
+  "noData": "Brak danych",
+
+  "homePopularNowTitle": "Popularne teraz",
+  "homePopularNowSubtitle": "Posortowane według ostatnich wyświetleń",
+  "homeTopRatedTitle": "Najwyżej oceniane",
+  "homeTopRatedSubtitle": "Najlepiej oceniane przez czytelników",
+  "homeRecommendedTitle": "Polecane dla Ciebie",
+  "homeRecommendedSubtitle": "Ponieważ polubiłeś podobne powieści",
+
+  "loginCtaText": "Zaloguj się, aby zobaczyć spersonalizowane rekomendacje",
+  "loginCtaButton": "Zaloguj się",
+
+
+
+  "backTooltip": "Wstecz",
+
+  "novelTabInfo": "Informacje",
+  "novelTabChapters": "Rozdziały",
+  "novelTabComments": "Komentarze",
+
+  "noDescriptionAvailable": "Brak opisu",
+  "unknownAuthor": "Nieznany autor",
+
+  "tagsLabel": "Tagi:",
+  "descriptionLabel": "Opis:",
+
+  "loginToRate": "Zaloguj się, aby ocenić",
+  "ratingSaved": "Ocena zapisana",
+  "failedPrefix": "Niepowodzenie",
+
+  "addToLibraryInfo": "Dodawanie do biblioteki jest już zaimplementowane",
+  "addToLibraryButton": "Dodaj do biblioteki",
+  "readNowButton": "Czytaj teraz",
+
+  "replyButton": "Odpowiedz",
+  "replyDialogTitle": "Odpowiedź",
+  "replyDialogHint": "Twoja odpowiedź...",
+  "cancelButton": "Anuluj",
+  "sendButton": "Wyślij",
+
+  "statusPlanned": "Planowane",
+  "statusReading": "Czytane",
+  "statusOnHold": "Wstrzymane",
+  "statusDropped": "Porzucone",
+  "statusCompleted": "Ukończone"
+}

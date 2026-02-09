@@ -1,0 +1,241 @@
+{
+  "@@locale": "en",
+  "appTitle": "Novel App",
+  "settings": "Settings",
+  "theme": "Theme",
+  "language": "Language",
+  "light": "Light",
+  "dark": "Dark",
+  "system": "System",
+  "polish": "Polish",
+  "english": "English",
+
+  "myProfile": "My Profile",
+  "tabLibrary": "Library",
+  "tabInfo": "Info",
+  "tabAchievements": "Achievements",
+
+  "editProfileTitle": "Edit Profile",
+  "displayNameLabel": "Display name",
+  "bioLabel": "Bio",
+  "uploadAvatar": "Upload avatar",
+  "profileUpdated": "Profile updated!",
+  "saveButton": "Save",
+  "loggedOut": "Logged out",
+  "logOut": "Log out",
+  "noUserData": "No user data",
+
+  "changePasswordTitle": "Change password",
+  "currentPasswordLabel": "Current password",
+  "enterCurrentPassword": "Enter current password",
+  "newPasswordLabel": "New password",
+  "minPasswordLength": "Minimum 6 characters",
+  "repeatNewPasswordLabel": "Repeat new password",
+  "passwordsDoNotMatch": "Passwords do not match",
+  "passwordChanged": "Password changed",
+
+  "darkTheme": "Dark theme",
+
+  "noAchievementsDefined": "No achievements defined",
+  "achievementDefaultTitle": "Achievement",
+  "pointsShort": "pts",
+
+  "libStatusAll": "All",
+  "libStatusReading": "Reading",
+  "libStatusPlanned": "Planned",
+  "libStatusOnHold": "On hold",
+  "libStatusDropped": "Dropped",
+  "libStatusCompleted": "Completed",
+  "libStatusFavorites": "Favorites",
+
+  "noNovelsInCategory": "No novels in this category",
+  "untitledNovel": "Untitled",
+  "unknownAuthor": "Unknown author",
+
+
+
+  "notificationsTitleUnread": "Notifications • Unread",
+  "notificationsTitleAll": "Notifications • All",
+  "notificationsFilterUnread": "Unread",
+  "notificationsFilterAll": "All",
+  "notificationsMarkAllTooltip": "Mark all as read",
+  "notificationsAllReadTooltip": "All read",
+  "noNotifications": "No notifications",
+
+  "notificationNewChapterPrefix": "New chapter",
+  "notificationDefaultNovelTitle": "Novel",
+  "notificationDefaultChapterTitle": "New chapter",
+  "notificationReplySuffix": "replied",
+  "notificationReplyDefaultText": "replied to your comment",
+  "notificationAchievementUnlockedTitle": "Achievement unlocked",
+  "notificationDefaultTitle": "Notification",
+
+  "notificationReadButton": "Read",
+  "notificationMarkAsReadButton": "Mark as read",
+
+  "notificationMissingIds": "Missing novel/chapter id in notification",
+  "notificationFailedLoadNovel": "Failed to load novel",
+  "notificationChapterNotFound": "Chapter not found in novel",
+
+  "failedPrefix": "Failed",
+  "openErrorPrefix": "Open error",
+  "errorPrefix": "Error",
+
+
+
+  "createTitle": "Create",
+  "createModeNovel": "Novel",
+  "createModeChapter": "Chapter",
+  "createNovelButton": "Create novel",
+  "addChapterButton": "Add chapter",
+
+  "novelTitleLabel": "Title",
+  "novelTitleHint": "\"Novel title\"",
+  "novelDescriptionLabel": "Description",
+  "novelDescriptionHint": "Short synopsis",
+
+  "uploadCoverButton": "Upload cover",
+  "tagsLabel": "Tags",
+  "noTags": "No tags",
+  "noTagsSelected": "No tags selected",
+  "tagsSelectedPrefix": "Selected:",
+
+  "selectNovelTitle": "Select novel",
+  "searchNovelHint": "Search novel by title...",
+  "selectedNovelSubtitle": "Selected novel",
+  "resultsTitle": "Results",
+
+  "chapterTitleLabel": "Chapter title",
+  "chapterTitleHint": "\"Chapter name\" | number",
+  "chapterContentLabel": "Content",
+  "chapterContentHint": "Paste chapter text here",
+
+  "tagsLoadFailedPrefix": "Failed to load tags",
+  "coverUploaded": "Cover uploaded",
+  "uploadFailedPrefix": "Upload failed",
+  "searchFailedPrefix": "Search failed",
+
+  "novelFillTitleAndDescription": "Please fill title and description",
+  "novelCreated": "Novel created",
+  "createNovelFailedPrefix": "Create novel failed",
+
+  "pickNovelFirst": "Pick a novel first",
+  "chapterFillTitleAndContent": "Please fill chapter title and content",
+  "chapterAdded": "Chapter added",
+  "addChapterFailedPrefix": "Add chapter failed",
+
+
+
+  "mustBeLoggedInToComment": "You must be logged in to comment",
+  "mustBeLoggedInToReport": "You must be logged in to report",
+  "unknownUser": "Unknown user",
+  "noContentAvailable": "No content available",
+
+  "translatedToPrefix": "Translated to",
+  "translatingToPrefix": "Translating to",
+  "emptyTranslation": "Empty translation received",
+  "translationFailedPrefix": "Translation failed",
+  "translationErrorPrefix": "Translation error",
+
+  "chapterListTitle": "Chapter list",
+  "chapterWord": "Chapter",
+
+  "readingSettingsTitle": "Reading settings",
+  "fontSizeLabel": "Font size",
+  "translationSectionTitle": "Translation",
+  "targetLanguageLabel": "Target language",
+  "showTranslatedText": "Show translated text",
+  "translateNowButton": "Translate now",
+  "showingPrefix": "Showing:",
+  "themeLabel": "Theme",
+  "lineHeightLabel": "Line height",
+  "comingSoon": "Coming soon",
+  "closeButton": "Close",
+
+  "chapterReported": "Chapter reported",
+  "commentReported": "Comment reported",
+
+  "unknownNovel": "Unknown novel",
+  "noChapters": "No chapters",
+
+  "chaptersTooltip": "Chapters",
+  "textSettingsTooltip": "Text settings",
+  "reportChapterTooltip": "Report chapter",
+  "reportCommentTooltip": "Report comment",
+
+  "previousChapter": "Previous chapter",
+  "noPreviousChapter": "No previous chapter",
+  "nextChapter": "Next chapter",
+  "backToNovel": "Back to novel",
+
+  "commentsTitle": "Comments",
+  "noCommentsYet": "No comments yet",
+  "writeCommentHint": "Write a comment...",
+  "loginToComment": "Log in to comment",
+
+
+
+  "searchTitle": "Search novels",
+  "searchEnterTitleLabel": "Enter novel title...",
+  "searchErrorPrefix": "Error",
+  "searchFailedPrefix": "Failed",
+
+  "showFiltersTooltip": "Show filters",
+  "hideFiltersTooltip": "Hide filters",
+
+  "searchMatchLabel": "Match:",
+  "searchMatchAny": "Any",
+  "searchMatchAll": "All",
+  "searchApplyFilters": "Apply",
+
+  "searchNoResultsYet": "No results yet",
+  "searchUnknownAuthor": "Unknown author",
+
+
+
+  "noData": "No data",
+
+  "homePopularNowTitle": "Popular now",
+  "homePopularNowSubtitle": "Sorted by recent views",
+  "homeTopRatedTitle": "Top rated",
+  "homeTopRatedSubtitle": "Best rated by readers",
+  "homeRecommendedTitle": "Recommended for you",
+  "homeRecommendedSubtitle": "Because you liked similar novels",
+
+  "loginCtaText": "Sign in to see personal recommendations",
+  "loginCtaButton": "Sign in",
+
+
+
+  "backTooltip": "Back",
+
+  "novelTabInfo": "Information",
+  "novelTabChapters": "Chapters",
+  "novelTabComments": "Comments",
+
+  "noDescriptionAvailable": "No description available",
+  "unknownAuthor": "Unknown author",
+
+  "tagsLabel": "Tags:",
+  "descriptionLabel": "Description:",
+
+  "loginToRate": "Log in to rate",
+  "ratingSaved": "Rating saved",
+  "failedPrefix": "Failed",
+
+  "addToLibraryInfo": "Add to Library from here too (already implemented)",
+  "addToLibraryButton": "Add to Library",
+  "readNowButton": "Read now",
+
+  "replyButton": "Reply",
+  "replyDialogTitle": "Reply",
+  "replyDialogHint": "Your reply...",
+  "cancelButton": "Cancel",
+  "sendButton": "Send",
+
+  "statusPlanned": "Planned",
+  "statusReading": "Reading",
+  "statusOnHold": "On hold",
+  "statusDropped": "Dropped",
+  "statusCompleted": "Completed"
+}
