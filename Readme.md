@@ -99,7 +99,10 @@ cp .env.example .env
 
 Fill in required values inside `.env`.
 
-For evaluation purposes, the author can provide a ready-to-use `.env` configuration file upon request.
+If you require a ready-to-use `.env` configuration file for testing,  
+please contact the author:
+
+68149@student.wsiz.edu.pl
 
 ------------------------------------------------------------------------
 
