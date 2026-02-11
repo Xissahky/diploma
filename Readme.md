@@ -142,7 +142,6 @@ http://10.0.2.2:3000
 
 -   Environment variables are stored in `.env`
 -   `.env` is excluded via `.gitignore`
--   Sensitive keys are not committed
 -   JWT is used for secure authentication
 -   Passwords are hashed before storage
 -   API keys are handled server-side
