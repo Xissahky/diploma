@@ -29,17 +29,14 @@ class _NovelReaderPageState extends State<NovelReaderPage> {
   bool _loading = true;
   double _fontSize = 18.0;
 
-  // comments
   List<dynamic> _comments = [];
   bool _loadingComments = false;
   String? _authToken;
   final TextEditingController _commentController = TextEditingController();
 
-  // --- labels для хелперов без контекста ---
   String _unknownUserLabel = 'Unknown user';
   String _noContentLabel = 'No content available';
 
-  // --- Translation state ---
   final List<Map<String, String>> _languages = const [
     {'code': 'en', 'label': 'English'},
     {'code': 'pl', 'label': 'Polski'},
@@ -232,7 +229,7 @@ class _NovelReaderPageState extends State<NovelReaderPage> {
     final chapterId = _currentChapter!['id'] as String;
     final key = '$chapterId:$_targetLang';
     if (_translationCache.containsKey(key)) {
-      setState(() {}); // уже есть в кэше
+      setState(() {}); // already in cashe
       return;
     }
 
@@ -708,7 +705,6 @@ class _NovelReaderPageState extends State<NovelReaderPage> {
             ? const Center(child: CircularProgressIndicator())
             : Column(
                 children: [
-                  // Header
                   Container(
                     color: Colors.grey.shade100,
                     padding: const EdgeInsets.symmetric(

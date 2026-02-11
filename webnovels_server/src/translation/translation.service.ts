@@ -45,7 +45,6 @@ export class TranslationService {
   }
 
   async translateChapter({ chapterId, targetLang }: TranslateChapterDto): Promise<string> {
-    // cache hit?
     const cached = await this.prisma.chapterTranslation.findUnique({
       where: { chapterId_targetLang: { chapterId, targetLang } },
     });

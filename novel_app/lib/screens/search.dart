@@ -93,7 +93,6 @@ class _SearchPageState extends State<SearchPage> {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            // 🔍 поле поиска
             TextField(
               controller: _controller,
               decoration: InputDecoration(

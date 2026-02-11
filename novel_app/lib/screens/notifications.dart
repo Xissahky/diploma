@@ -392,7 +392,6 @@ class _NotificationsPageState extends State<NotificationsPage> {
                                   overflow: TextOverflow.ellipsis,
                                 ),
 
-                                // 🔽 компактные, "кофейные" кнопки справа
                                 trailing: isRead
                                     ? Icon(
                                         Icons.done,

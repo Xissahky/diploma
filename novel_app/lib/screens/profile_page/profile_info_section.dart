@@ -161,7 +161,6 @@ class _ProfileInfoSectionState extends State<ProfileInfoSection> {
             onTap: _changePassword,
           ),
 
-          // Переключатель темы
           SwitchListTile(
             title: Text(s.darkTheme),
             value: darkMode,
@@ -172,7 +171,6 @@ class _ProfileInfoSectionState extends State<ProfileInfoSection> {
             },
           ),
 
-          // Переключатель языка
           ListTile(
             leading: const Icon(Icons.language),
             title: Text(s.language),

@@ -14,7 +14,6 @@ import { NovelsService } from './novels.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CurrentUser } from '../auth/current-user.decorator';
 
-// DTO (создай файлы, если ещё не созданы)
 import { CreateNovelDto } from '../dto/create-novel.dto';
 import { UpdateNovelDto } from '../dto/update-novel.dto';
 import { CreateChapterDto } from '../dto/create-chapter.dto';
@@ -72,7 +71,7 @@ export class NovelsController {
 
   @Get('sections')
   @ApiOperation({ summary: 'Home sections: popular, topRated, recommended' })
-  @UseGuards(JwtAuthGuard) // убери guard, если хочешь публично
+  @UseGuards(JwtAuthGuard) 
   @ApiBearerAuth()
   getSections(@CurrentUser() u: any) {
     return this.novelsService.getHomeSections(u?.userId);
@@ -88,8 +87,7 @@ export class NovelsController {
   @Get(':id')
   @ApiOperation({ summary: 'Get one novel by ID' })
   getOne(@Param('id') id: string, @CurrentUser() user?: any) {
-    // user?.userId будет только если у тебя стоит глобальный guard/интерсептор,
-    // иначе можно оставить просто this.novelsService.getOne(id)
+
     return this.novelsService.getOne(id, user?.userId);
   }
 
