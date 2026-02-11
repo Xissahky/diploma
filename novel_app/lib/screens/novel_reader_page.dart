@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import 'novel_details.dart';
+import '../theme/reader_themes.dart';
 import '../storage/auth_storage.dart';
 import '../widgets/report_dialog.dart';
 import '../api/report_api.dart';
@@ -28,11 +29,17 @@ class _NovelReaderPageState extends State<NovelReaderPage> {
   List<dynamic> _chapters = [];
   bool _loading = true;
   double _fontSize = 18.0;
+  double _lineHeight = 1.6;
+  late ReaderTheme _currentTheme;
+
+
 
   List<dynamic> _comments = [];
   bool _loadingComments = false;
   String? _authToken;
   final TextEditingController _commentController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
+
 
   String _unknownUserLabel = 'Unknown user';
   String _noContentLabel = 'No content available';
@@ -56,8 +63,17 @@ class _NovelReaderPageState extends State<NovelReaderPage> {
   @override
   void initState() {
     super.initState();
+    _currentTheme = ReaderThemes.themes.first;
     _initPage();
   }
+  
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    _commentController.dispose();
+    super.dispose();
+  }
+
 
   Future<void> _initPage() async {
     final token = await AuthStorage.getToken();
@@ -182,6 +198,7 @@ class _NovelReaderPageState extends State<NovelReaderPage> {
     setState(() {
       _currentChapter = _chapters[_currentIndex - 1];
     });
+    _scrollToTop();
     _fetchCommentsForChapter(_currentChapter!['id']);
     _maybePrefetchTranslation();
   }
@@ -191,6 +208,7 @@ class _NovelReaderPageState extends State<NovelReaderPage> {
       setState(() {
         _currentChapter = _chapters[_currentIndex + 1];
       });
+      _scrollToTop();
       _fetchCommentsForChapter(_currentChapter!['id']);
       _maybePrefetchTranslation();
     } else {
@@ -395,6 +413,8 @@ class _NovelReaderPageState extends State<NovelReaderPage> {
         double tempFontSize = _fontSize;
         String tempLang = _targetLang;
         bool tempShowTranslated = _showTranslated;
+        double tempLineHeight = _lineHeight;
+
 
         return StatefulBuilder(
           builder: (context, setModalState) {
@@ -433,11 +453,10 @@ class _NovelReaderPageState extends State<NovelReaderPage> {
                                   icon: const Icon(Icons.remove),
                                   onPressed: () {
                                     setModalState(() {
-                                      tempFontSize = (tempFontSize - 1)
-                                          .clamp(12.0, 28.0);
+                                      tempFontSize =
+                                          (tempFontSize - 1).clamp(12.0, 28.0);
                                     });
-                                    setState(
-                                        () => _fontSize = tempFontSize);
+                                    setState(() => _fontSize = tempFontSize);
                                   },
                                 ),
                                 Text(
@@ -448,11 +467,51 @@ class _NovelReaderPageState extends State<NovelReaderPage> {
                                   icon: const Icon(Icons.add),
                                   onPressed: () {
                                     setModalState(() {
-                                      tempFontSize = (tempFontSize + 1)
-                                          .clamp(12.0, 28.0);
+                                      tempFontSize =
+                                          (tempFontSize + 1).clamp(12.0, 28.0);
                                     });
-                                    setState(
-                                        () => _fontSize = tempFontSize);
+                                    setState(() => _fontSize = tempFontSize);
+                                  },
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+
+                        const SizedBox(height: 12),
+
+                        // Line height
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              s.lineHeightLabel,
+                              style: const TextStyle(fontSize: 16),
+                            ),
+                            Row(
+                              children: [
+                                IconButton(
+                                  icon: const Icon(Icons.remove),
+                                  onPressed: () {
+                                    setModalState(() {
+                                      tempLineHeight =
+                                          (tempLineHeight - 0.1).clamp(1.2, 2.4);
+                                    });
+                                    setState(() => _lineHeight = tempLineHeight);
+                                  },
+                                ),
+                                Text(
+                                  tempLineHeight.toStringAsFixed(1),
+                                  style: const TextStyle(fontSize: 16),
+                                ),
+                                IconButton(
+                                  icon: const Icon(Icons.add),
+                                  onPressed: () {
+                                    setModalState(() {
+                                      tempLineHeight =
+                                          (tempLineHeight + 0.1).clamp(1.2, 2.4);
+                                    });
+                                    setState(() => _lineHeight = tempLineHeight);
                                   },
                                 ),
                               ],
@@ -538,20 +597,32 @@ class _NovelReaderPageState extends State<NovelReaderPage> {
 
                         const Divider(height: 24),
 
-                        ListTile(
-                          leading:
-                              const Icon(Icons.color_lens_outlined),
-                          title: Text(s.themeLabel),
-                          subtitle: Text(s.comingSoon),
-                          onTap: () {},
+                        Text(
+                          s.themeLabel,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        ListTile(
-                          leading: const Icon(
-                              Icons.auto_stories_outlined),
-                          title: Text(s.lineHeightLabel),
-                          subtitle: Text(s.comingSoon),
-                          onTap: () {},
+                        const SizedBox(height: 8),
+
+                        DropdownButtonFormField<ReaderTheme>(
+                          value: _currentTheme,
+                          items: ReaderThemes.themes
+                              .map(
+                                (theme) => DropdownMenuItem(
+                                  value: theme,
+                                  child: Text(theme.name),
+                                ),
+                              )
+                              .toList(),
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            isDense: true,
+                          ),
+                          onChanged: (theme) {
+                            if (theme == null) return;
+                            setState(() => _currentTheme = theme);
+                          },
                         ),
+                        
                         const SizedBox(height: 12),
                         Center(
                           child: ElevatedButton(
@@ -686,6 +757,17 @@ class _NovelReaderPageState extends State<NovelReaderPage> {
     );
   }
   // ========================================================
+  
+  void _scrollToTop() {
+    if (!_scrollController.hasClients) return;
+
+    _scrollController.animateTo(
+      0,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOut,
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -699,14 +781,14 @@ class _NovelReaderPageState extends State<NovelReaderPage> {
     final displayedContent = _getDisplayedContent();
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: _currentTheme.backgroundColor,
       body: SafeArea(
         child: _loading
             ? const Center(child: CircularProgressIndicator())
             : Column(
                 children: [
                   Container(
-                    color: Colors.grey.shade100,
+                    color: _currentTheme.headerColor,
                     padding: const EdgeInsets.symmetric(
                         horizontal: 12, vertical: 10),
                     child: Row(
@@ -761,11 +843,15 @@ class _NovelReaderPageState extends State<NovelReaderPage> {
                       ],
                     ),
                   ),
-                  const Divider(height: 1),
+                  Divider(
+                    height: 1,
+                    color: _currentTheme.dividerColor,
+                  ),
 
                   // Content + badges
                   Expanded(
                     child: SingleChildScrollView(
+                      controller: _scrollController,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16, vertical: 16),
                       child: Column(
@@ -797,8 +883,8 @@ class _NovelReaderPageState extends State<NovelReaderPage> {
                             displayedContent,
                             style: TextStyle(
                               fontSize: _fontSize,
-                              height: 1.6,
-                              color: Colors.black,
+                              height: _lineHeight,
+                              color: _currentTheme.textColor,
                             ),
                           ),
                           const SizedBox(height: 24),
@@ -843,7 +929,8 @@ class _NovelReaderPageState extends State<NovelReaderPage> {
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              color: Colors.grey.shade800,
+                              color: _currentTheme.secondaryTextColor,
+
                             ),
                           ),
                           const SizedBox(height: 12),
@@ -853,7 +940,7 @@ class _NovelReaderPageState extends State<NovelReaderPage> {
                           else if (_comments.isEmpty)
                             Text(
                               s.noCommentsYet,
-                              style: const TextStyle(color: Colors.grey),
+                              style: TextStyle(color: _currentTheme.textColor),
                             )
                           else
                             ListView.builder(

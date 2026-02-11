@@ -19,6 +19,17 @@ import { UpdateNovelDto } from '../dto/update-novel.dto';
 import { CreateChapterDto } from '../dto/create-chapter.dto';
 import { UpdateChapterDto } from '../dto/update-chapter.dto';
 
+import { Injectable } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+
+@Injectable()
+export class OptionalJwtAuthGuard extends AuthGuard('jwt') {
+  handleRequest(err, user, info) {
+    return user ?? null;
+  }
+}
+
+
 @ApiTags('novels')
 @Controller('novels')
 export class NovelsController {
@@ -70,10 +81,9 @@ export class NovelsController {
   }
 
   @Get('sections')
+  @UseGuards(OptionalJwtAuthGuard)
   @ApiOperation({ summary: 'Home sections: popular, topRated, recommended' })
-  @UseGuards(JwtAuthGuard) 
-  @ApiBearerAuth()
-  getSections(@CurrentUser() u: any) {
+  getSections(@CurrentUser() u?: any) {
     return this.novelsService.getHomeSections(u?.userId);
   }
 

@@ -33,6 +33,13 @@ class _MainScreenState extends State<MainScreen> {
     return _HomeData(sections, isAuthed);
   }
 
+  Future<void> _reloadHome() async {
+  setState(() {
+    _dataFuture = _load(); 
+  });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final s = AppLocalizations.of(context)!;
@@ -76,7 +83,11 @@ class _MainScreenState extends State<MainScreen> {
                 subtitle: s.homeRecommendedSubtitle,
                 items: recommended,
               ),
-            if (!data.isAuthed) const _LoginCta(),
+            if (!data.isAuthed)
+              _LoginCta(
+                onLoggedIn: _reloadHome,
+              ),
+
           ],
         );
       },
@@ -253,7 +264,11 @@ class _NovelCard extends StatelessWidget {
 }
 
 class _LoginCta extends StatelessWidget {
-  const _LoginCta();
+  final VoidCallback onLoggedIn;
+
+  const _LoginCta({
+    required this.onLoggedIn,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -280,12 +295,17 @@ class _LoginCta extends StatelessWidget {
               ),
               const SizedBox(width: 12),
               ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).push(
+                onPressed: () async {
+                  final result = await Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (_) => const SignInPage(),
                     ),
                   );
+
+                  if (result == true) {
+                    onLoggedIn();
+                  }
+
                 },
                 child: Text(s.loginCtaButton),
               ),

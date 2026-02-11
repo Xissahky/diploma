@@ -36,7 +36,7 @@ class _SignInPageState extends State<SignInPage> {
         const SnackBar(content: Text('Login successful!')),
       );
 
-      Navigator.pop(context); 
+      Navigator.pop(context, true); 
     }
   } catch (e) {
     setState(() => _error = e.toString());
@@ -49,6 +49,21 @@ class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar( 
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.black,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new),
+          onPressed: () {
+            Navigator.pushNamedAndRemoveUntil(
+              context,
+              '/',
+              (route) => false,
+            );
+          },
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(32),
         child: Column(
