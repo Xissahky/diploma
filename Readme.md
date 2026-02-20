@@ -77,10 +77,10 @@ Flutter.
 
 ## Clone the repository
 
-
+``` bash
 git clone https://github.com/Xissahky/diploma.git
 cd diploma
-
+```
 
 ------------------------------------------------------------------------
 
@@ -108,9 +108,9 @@ flutter pub get
 
 Use the following command to start the Flutter application:
 
-
+``` bash
 flutter run --dart-define=BASE_URL=https://diploma-kkqq.onrender.com
-
+```
 
 ------------------------------------------------------------------------
 
