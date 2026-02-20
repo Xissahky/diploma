@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../storage/auth_storage.dart';
+import '../config/api_config.dart';
 
 class ReportApi {
-  static const baseUrl = "10.0.2.2:3000";
+  static const baseUrl = "${ApiConfig.baseUrl}";
 
   static Future<void> sendReport({
     required String targetType, 

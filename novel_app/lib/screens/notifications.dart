@@ -7,6 +7,7 @@ import 'novel_reader_page.dart';
 import 'profile_page.dart';
 import '../settings/settings_controller.dart';
 import '../l10n/app_localizations.dart';
+import '../config/api_config.dart';
 
 class NotificationsPage extends StatefulWidget {
   final SettingsController settings;
@@ -21,7 +22,7 @@ class NotificationsPage extends StatefulWidget {
 }
 
 class _NotificationsPageState extends State<NotificationsPage> {
-  static const String _base = 'http://10.0.2.2:3000';
+  static const String _base = '${ApiConfig.baseUrl}';
 
   bool unreadOnly = true;
   bool loading = true;

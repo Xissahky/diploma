@@ -13,6 +13,7 @@ import './profile_page/profile_library_section.dart';
 import './profile_page/profile_info_section.dart';
 import '../settings/settings_controller.dart';
 import '../l10n/app_localizations.dart';
+import '../config/api_config.dart';
 
 class ProfilePage extends StatefulWidget {
   final int? initialTab;
@@ -90,7 +91,7 @@ class _ProfilePageState extends State<ProfilePage>
 
   Future<String?> _uploadImage(File file) async {
     final token = await AuthStorage.getToken();
-    final uri = Uri.parse('http://10.0.2.2:3000/uploads');
+    final uri = Uri.parse('${ApiConfig.baseUrl}/uploads');
     final request = http.MultipartRequest('POST', uri)
       ..headers['Authorization'] = 'Bearer $token'
       ..files.add(await http.MultipartFile.fromPath('file', file.path));
@@ -221,7 +222,7 @@ class _ProfilePageState extends State<ProfilePage>
     final avatarUrl = user!['avatarUrl'] ?? '';
     final avatar = avatarUrl.startsWith('http')
         ? avatarUrl
-        : 'http://10.0.2.2:3000$avatarUrl';
+        : '${ApiConfig.baseUrl}$avatarUrl';
 
     return Scaffold(
       appBar: AppBar(

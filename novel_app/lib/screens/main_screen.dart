@@ -4,6 +4,8 @@ import '../api/auth_api.dart';
 import './novel_details.dart';
 import 'sign_in_page.dart';
 import '../l10n/app_localizations.dart';
+import '../../config/api_config.dart';
+
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -171,7 +173,10 @@ class _NovelCard extends StatelessWidget {
       if (u.isEmpty) {
         return 'https://placehold.co/400x600?text=No+Image';
       }
-      return u.startsWith('http') ? u : 'http://10.0.2.2:3000$u';
+      return u.startsWith('http')
+        ? u
+        : '${ApiConfig.baseUrl}$u';
+
     })();
 
     return GestureDetector(

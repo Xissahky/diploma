@@ -1,28 +1,40 @@
-import { Controller, Post, UseInterceptors, UploadedFile } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import { extname } from 'path';
+import { memoryStorage } from 'multer';
 import { ApiTags } from '@nestjs/swagger';
-
+import { CloudinaryService } from '../common/cloudinary.service';
 
 @ApiTags('uploads')
 @Controller('uploads')
 export class UploadsController {
+  constructor(private readonly cloudinaryService: CloudinaryService) {}
+
   @Post()
   @UseInterceptors(
     FileInterceptor('file', {
-      storage: diskStorage({
-        destination: './uploads',
-        filename: (req, file, cb) => {
-          const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-          const ext = extname(file.originalname);
-          cb(null, `${uniqueSuffix}${ext}`);
-        },
-      }),
+      storage: memoryStorage(),
+      limits: {
+        fileSize: 5 * 1024 * 1024, // 5MB limit
+      },
+      fileFilter: (req, file, cb) => {
+        if (!file.mimetype.match(/\/(jpg|jpeg|png|webp)$/)) {
+          cb(new Error('Only image files are allowed!'), false);
+        } else {
+          cb(null, true);
+        }
+      },
     }),
   )
-  uploadFile(@UploadedFile() file: Express.Multer.File)
-  {
-    return { url: `/uploads/${file.filename}` };
+  async uploadFile(@UploadedFile() file: Express.Multer.File) {
+    const result: any = await this.cloudinaryService.uploadImage(file);
+
+    return {
+      url: result.secure_url,
+    };
   }
 }

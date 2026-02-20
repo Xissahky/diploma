@@ -5,6 +5,7 @@ import 'novel_details/novel_chapters_section.dart';
 import 'novel_details/novel_comments_section.dart';
 import '../storage/auth_storage.dart';
 import '../l10n/app_localizations.dart';
+import '../config/api_config.dart';
 
 class NovelDetailsPage extends StatefulWidget {
   final Map<String, dynamic> novel;
@@ -39,7 +40,7 @@ class _NovelDetailsPageState extends State<NovelDetailsPage> {
     final cover = (widget.novel['coverUrl'] != null)
         ? (widget.novel['coverUrl'].toString().startsWith('http')
             ? widget.novel['coverUrl']
-            : 'http://10.0.2.2:3000${widget.novel['coverUrl']}')
+            : '${ApiConfig.baseUrl}${widget.novel['coverUrl']}')
         : 'https://placehold.co/300x400';
 
     return Scaffold(
@@ -47,7 +48,13 @@ class _NovelDetailsPageState extends State<NovelDetailsPage> {
         leading: IconButton(
           tooltip: s.backTooltip,
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            Navigator.pushNamedAndRemoveUntil(
+              context,
+              '/',
+              (route) => false,
+            );
+          },
         ),
         title: Text(title, overflow: TextOverflow.ellipsis),
       ),

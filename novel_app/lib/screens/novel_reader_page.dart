@@ -8,6 +8,7 @@ import '../storage/auth_storage.dart';
 import '../widgets/report_dialog.dart';
 import '../api/report_api.dart';
 import '../l10n/app_localizations.dart';
+import '../config/api_config.dart';
 
 
 class NovelReaderPage extends StatefulWidget {
@@ -85,7 +86,7 @@ class _NovelReaderPageState extends State<NovelReaderPage> {
 
   Future<void> _fetchChapters() async {
     final novelId = widget.novel['id'];
-    final uri = Uri.http('10.0.2.2:3000', '/novels/$novelId');
+    final uri = Uri.parse('${ApiConfig.baseUrl}/novels/$novelId');
 
     try {
       final res = await http.get(uri);
@@ -130,7 +131,7 @@ class _NovelReaderPageState extends State<NovelReaderPage> {
   Future<void> _fetchCommentsForChapter(String chapterId) async {
     setState(() => _loadingComments = true);
     try {
-      final uri = Uri.http('10.0.2.2:3000', '/comments/chapter/$chapterId');
+      final uri = Uri.parse('${ApiConfig.baseUrl}/comments/chapter/$chapterId');
       final res = await http.get(uri);
       if (res.statusCode == 200) {
         final data = jsonDecode(res.body);
@@ -160,7 +161,7 @@ class _NovelReaderPageState extends State<NovelReaderPage> {
     if (chapterId == null) return;
 
     try {
-      final uri = Uri.http('10.0.2.2:3000', '/comments');
+      final uri = Uri.parse('${ApiConfig.baseUrl}/comments');
       final res = await http.post(
         uri,
         headers: {
@@ -253,7 +254,7 @@ class _NovelReaderPageState extends State<NovelReaderPage> {
 
     setState(() => _translating = true);
     try {
-      Uri uri = Uri.http('10.0.2.2:3000', '/translate/chapter');
+      Uri uri = Uri.parse('${ApiConfig.baseUrl}/translate/chapter');
       Map<String, String> headers = {
         'Content-Type': 'application/json',
         if (_authToken != null) 'Authorization': 'Bearer $_authToken',
@@ -265,7 +266,7 @@ class _NovelReaderPageState extends State<NovelReaderPage> {
 
       if (res.statusCode == 404) {
         final original = _currentChapter?['content'] ?? '';
-        uri = Uri.http('10.0.2.2:3000', '/translate/text');
+        uri = Uri.parse('${ApiConfig.baseUrl}/translate/text');
         body = jsonEncode({'text': original, 'targetLang': _targetLang});
         res = await http.post(uri, headers: headers, body: body);
       }

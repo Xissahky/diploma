@@ -9,6 +9,7 @@ import 'profile_page.dart';
 import '../storage/auth_storage.dart';
 import '../api/user_api.dart';
 import '../settings/settings_controller.dart';
+import '../config/api_config.dart';
 
 class RootScreen extends StatefulWidget {
   final SettingsController settings;
@@ -62,7 +63,7 @@ class _RootScreenState extends State<RootScreen> {
     final avatarUrl = user != null && user!['avatarUrl'] != null
         ? (user!['avatarUrl'].toString().startsWith('http')
             ? user!['avatarUrl']
-            : 'http://10.0.2.2:3000${user!['avatarUrl']}')
+            : '${ApiConfig.baseUrl}${user!['avatarUrl']}')
         : 'https://placehold.co/32x32';
 
     final pages = [

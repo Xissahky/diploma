@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../storage/auth_storage.dart';
 import 'dart:io';
-
+import '../config/api_config.dart';
 
 class NovelsApi {
-  static const String baseUrl = 'http://10.0.2.2:3000';
+  static const String baseUrl = '${ApiConfig.baseUrl}';
 
   static Future<List<dynamic>> fetchNovels() async {
     final res = await http.get(Uri.parse('$baseUrl/novels'));

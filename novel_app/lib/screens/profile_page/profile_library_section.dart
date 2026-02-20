@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../api/library_api.dart';
 import '../../screens/novel_reader_page.dart';
 import '../../l10n/app_localizations.dart';
+import '../../config/api_config.dart';
 
 class ProfileLibrarySection extends StatefulWidget {
   const ProfileLibrarySection({super.key});
@@ -130,7 +131,7 @@ class _ProfileLibrarySectionState extends State<ProfileLibrarySection> {
                             final image =
                                 coverUrl.toString().startsWith('http')
                                     ? coverUrl
-                                    : 'http://10.0.2.2:3000$coverUrl';
+                                    : '${ApiConfig.baseUrl}$coverUrl';
                             final statusCode = e['status'] ?? '';
                             final fav = e['favorite'] == true;
 

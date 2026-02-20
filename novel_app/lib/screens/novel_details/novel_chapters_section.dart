@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../novel_reader_page.dart';
 import '../../l10n/app_localizations.dart';
+import '../../config/api_config.dart';
+
 
 class NovelChaptersSection extends StatefulWidget {
   final Map<String, dynamic> novel;
@@ -27,7 +29,9 @@ class _NovelChaptersSectionState extends State<NovelChaptersSection> {
     setState(() => _loading = true);
     final novelId = widget.novel['id'];
     try {
-      final uri = Uri.http('10.0.2.2:3000', '/novels/$novelId');
+      final uri = Uri.parse(
+        '${ApiConfig.baseUrl}/novels/$novelId',
+      );
       final res = await http.get(uri);
       if (res.statusCode == 200) {
         final data = jsonDecode(res.body);

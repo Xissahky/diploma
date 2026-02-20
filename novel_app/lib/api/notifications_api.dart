@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../storage/auth_storage.dart';
+import '../config/api_config.dart';
 
 class NotificationsApi {
-  static const base = 'http://10.0.2.2:3000';
+  static const base = '${ApiConfig.baseUrl}';
 
   static Future<List<dynamic>> list({bool unreadOnly = false}) async {
     final token = await AuthStorage.getToken();

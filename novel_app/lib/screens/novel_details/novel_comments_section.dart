@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import '../../widgets/report_dialog.dart';
 import '../../api/report_api.dart';
 import '../../l10n/app_localizations.dart';
+import '../../config/api_config.dart';
 
 class NovelCommentsSection extends StatefulWidget {
   final String novelId;
@@ -35,9 +36,8 @@ class _NovelCommentsSectionState extends State<NovelCommentsSection> {
   Future<void> _fetchComments() async {
     setState(() => _loading = true);
     try {
-      final uri = Uri.http(
-        '10.0.2.2:3000',
-        '/comments/novel/${widget.novelId}',
+      final uri = Uri.parse(
+        '${ApiConfig.baseUrl}/comments/novel/${widget.novelId}',
       );
       final res = await http.get(uri);
       if (res.statusCode == 200) {
@@ -58,7 +58,7 @@ class _NovelCommentsSectionState extends State<NovelCommentsSection> {
     if (text.isEmpty) return;
 
     try {
-      final uri = Uri.http('10.0.2.2:3000', '/comments');
+      final uri = Uri.parse('${ApiConfig.baseUrl}/comments');
       final res = await http.post(
         uri,
         headers: {
@@ -431,7 +431,7 @@ class _NovelCommentsSectionState extends State<NovelCommentsSection> {
     required String text,
   }) async {
     try {
-      final uri = Uri.http('10.0.2.2:3000', '/comments');
+      final uri = Uri.parse('${ApiConfig.baseUrl}/comments');
       final res = await http.post(
         uri,
         headers: {

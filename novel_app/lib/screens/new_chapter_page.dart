@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import '../api/novels_api.dart';
 import './novel_details.dart';
 import '../l10n/app_localizations.dart';
+import '../config/api_config.dart';
 
 enum CreateMode { novel, chapter }
 
@@ -288,7 +289,7 @@ class _NewContentPageState extends State<NewContentPage> {
     final coverPreview = _coverUrlRemote != null
         ? (_coverUrlRemote!.startsWith('http')
             ? _coverUrlRemote!
-            : 'http://10.0.2.2:3000$_coverUrlRemote')
+            : '${ApiConfig.baseUrl}$_coverUrlRemote')
         : null;
 
     return Column(
@@ -382,7 +383,7 @@ class _NewContentPageState extends State<NewContentPage> {
     final selectedCover = (() {
       final u = _selectedNovel?['coverUrl'] as String?;
       if (u == null || u.isEmpty) return null;
-      return u.startsWith('http') ? u : 'http://10.0.2.2:3000$u';
+      return u.startsWith('http') ? u : '${ApiConfig.baseUrl}$u';
     })();
 
     return Column(
@@ -452,7 +453,7 @@ class _NewContentPageState extends State<NewContentPage> {
                   if (u.isEmpty) return null;
                   return u.startsWith('http')
                       ? u
-                      : 'http://10.0.2.2:3000$u';
+                      : '${ApiConfig.baseUrl}$u';
                 })();
                 return ListTile(
                   dense: true,

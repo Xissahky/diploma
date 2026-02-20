@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'novel_details.dart';
+import '../config/api_config.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -28,7 +29,7 @@ class _SearchPageState extends State<SearchPage> {
 
   Future<void> _fetchTags() async {
     try {
-      final uri = Uri.http('10.0.2.2:3000', '/novels/tags');
+      final uri = Uri.parse('${ApiConfig.baseUrl}/novels/tags');
       final res = await http.get(uri);
 
       if (res.statusCode == 200 && res.body.isNotEmpty) {
@@ -57,7 +58,9 @@ class _SearchPageState extends State<SearchPage> {
         'mode': _matchMode,
       };
 
-      final uri = Uri.http('10.0.2.2:3000', '/novels/search', params);
+      final uri = Uri.parse(
+        '${ApiConfig.baseUrl}/novels/search',
+      ).replace(queryParameters: params);
       final res = await http.get(uri);
 
       if (res.statusCode == 200) {
@@ -186,7 +189,7 @@ class _SearchPageState extends State<SearchPage> {
                         final image = (novel['coverUrl'] != null)
                             ? (novel['coverUrl'].toString().startsWith('http')
                                 ? novel['coverUrl']
-                                : 'http://10.0.2.2:3000${novel['coverUrl']}')
+                                : '${ApiConfig.baseUrl}${novel['coverUrl']}')
                             : 'https://placehold.co/200x300';
                         final tags =
                             (novel['tags'] as List?)?.join(' • ') ?? '';

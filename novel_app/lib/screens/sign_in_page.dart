@@ -29,7 +29,6 @@ class _SignInPageState extends State<SignInPage> {
 
     final token = res['access_token'];
     await AuthStorage.saveToken(token);
-    print('Logged in! Token: $token');
 
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
