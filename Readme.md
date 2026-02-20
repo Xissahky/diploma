@@ -98,11 +98,10 @@ Simply use the existing production API.
 
 ## Install Flutter dependencies
 
-
+``` bash
 cd novel_app
 flutter pub get
-
-
+```
 ------------------------------------------------------------------------
 
 ## Run the app
