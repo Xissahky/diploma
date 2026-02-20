@@ -99,7 +99,10 @@ cp .env.example .env
 
 Fill in required values inside `.env`.
 
-For evaluation purposes, the author can provide a ready-to-use `.env` configuration file upon request.
+If you require a ready-to-use `.env` configuration file for testing,  
+please contact the author:
+
+68149@student.wsiz.edu.pl
 
 ------------------------------------------------------------------------
 
@@ -142,7 +145,6 @@ http://10.0.2.2:3000
 
 -   Environment variables are stored in `.env`
 -   `.env` is excluded via `.gitignore`
--   Sensitive keys are not committed
 -   JWT is used for secure authentication
 -   Passwords are hashed before storage
 -   API keys are handled server-side
