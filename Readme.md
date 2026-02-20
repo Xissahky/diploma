@@ -75,69 +75,53 @@ Flutter.
 
 # ⚙️ Installation & Setup
 
-##  Clone the repository
+## Clone the repository
+
 
 git clone https://github.com/Xissahky/diploma.git
 cd diploma
 
-------------------------------------------------------------------------
-
-#  Backend Setup
-
-## Install dependencies
-
-cd webserver_novels\
-npm install
 
 ------------------------------------------------------------------------
 
-## Configure environment variables
+# 🌐 Backend
 
-Copy the example file:
+The backend server is already deployed and configured.
 
-cp .env.example .env
+No local setup is required. No environment configuration is required.
 
-Fill in required values inside `.env`.
-
-If you require a ready-to-use `.env` configuration file for testing,  
-please contact the author:
-
-68149@student.wsiz.edu.pl
+Simply use the existing production API.
 
 ------------------------------------------------------------------------
 
-##  Run database migrations
-
-npx prisma migrate dev
-
-------------------------------------------------------------------------
-
-## Start backend server
-
-npm run start
-
-Server will run at:
-
-http://localhost:3000
-
-------------------------------------------------------------------------
-
-#  Flutter App Setup
+# 📱 Flutter App Setup
 
 ## Install Flutter dependencies
 
-cd ../novel_app
+
+cd novel_app
 flutter pub get
+
 
 ------------------------------------------------------------------------
 
-##  Run the app
+## Run the app
 
-flutter run
+Use the following command to start the Flutter application:
 
-If using Android emulator, backend URL should be:
 
-http://10.0.2.2:3000
+flutter run --dart-define=BASE_URL=https://diploma-kkqq.onrender.com
+
+
+------------------------------------------------------------------------
+
+# 📝 Notes
+
+-   Backend is already deployed and maintained by the author.
+-   No server configuration steps are required.
+-   Make sure your device/emulator has internet access.
+-   Your first call to server can have delay 30-50 seconds for server to wake up.
+-   If you get some kind of problem trying to run contact me on e-mail: 68149@student.wsiz.edu.pl
 
 ------------------------------------------------------------------------
 
