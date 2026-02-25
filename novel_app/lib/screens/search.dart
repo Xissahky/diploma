@@ -201,10 +201,10 @@ class _SearchPageState extends State<SearchPage> {
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                novel['author']?['name'] ?? 'Unknown Author',
-                                style: const TextStyle(color: Colors.grey),
-                              ),
+                              // Text(
+                              //   novel['author']?['name'] ?? 'Unknown Author',
+                              //   style: const TextStyle(color: Colors.grey),
+                              // ),
                               if (tags.isNotEmpty)
                                 Text(tags,
                                     style: const TextStyle(

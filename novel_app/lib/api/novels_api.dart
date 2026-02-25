@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import '../storage/auth_storage.dart';
 import 'dart:io';
 import '../config/api_config.dart';
+import 'package:http_parser/http_parser.dart';
 
 class NovelsApi {
   static const String baseUrl = '${ApiConfig.baseUrl}';
@@ -57,20 +58,31 @@ class NovelsApi {
     throw Exception('Failed to search novels: ${res.statusCode}');
   }
 
+
   static Future<String> uploadImage(File file) async {
     final token = await AuthStorage.getToken();
     final uri = Uri.parse('$baseUrl/uploads');
+
     final request = http.MultipartRequest('POST', uri)
       ..headers['Authorization'] = 'Bearer $token'
-      ..files.add(await http.MultipartFile.fromPath('file', file.path));
+      ..files.add(
+        await http.MultipartFile.fromPath(
+          'file',
+          file.path,
+          contentType: MediaType('image', 'webp'), 
+        ),
+      );
+
     final resp = await request.send();
+
     if (resp.statusCode == 200 || resp.statusCode == 201) {
       final body = await http.Response.fromStream(resp);
       final data = jsonDecode(body.body) as Map<String, dynamic>;
-      return data['url'] as String; 
+      return data['url'] as String;
     }
+
     throw Exception('Upload failed: ${resp.statusCode}');
-    }
+  }
 
   static Future<Map<String, dynamic>> createNovel({
     required String title,

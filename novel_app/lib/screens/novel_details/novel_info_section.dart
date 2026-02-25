@@ -94,8 +94,8 @@ class _NovelInfoSectionState extends State<NovelInfoSection> {
     final title = novel['title'] ?? s.unknownNovel;
     final description =
         novel['description'] ?? s.noDescriptionAvailable;
-    final author =
-        novel['author']?['name'] ?? s.unknownAuthor;
+    // final author =
+    //     novel['author']?['name'] ?? s.unknownAuthor;
     final tags =
         (novel['tags'] as List?)?.join(', ') ?? '';
 
@@ -115,24 +115,24 @@ class _NovelInfoSectionState extends State<NovelInfoSection> {
             ),
           ),
           const SizedBox(height: 8),
-          Row(
-            children: [
-              const Icon(
-                Icons.person,
-                size: 18,
-                color: Colors.grey,
-              ),
-              const SizedBox(width: 6),
-              Text(
-                author,
-                style: const TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
+          // Row(
+          //   children: [
+          //     const Icon(
+          //       Icons.person,
+          //       size: 18,
+          //       color: Colors.grey,
+          //     ),
+          //     const SizedBox(width: 6),
+          //     Text(
+          //       author,
+          //       style: const TextStyle(
+          //         fontSize: 16,
+          //         color: Colors.grey,
+          //       ),
+          //     ),
+          //   ],
+          // ),
+          // const SizedBox(height: 12),
 
           if (_loadingRating)
             const SizedBox(
@@ -147,19 +147,12 @@ class _NovelInfoSectionState extends State<NovelInfoSection> {
             Row(
               children: [
                 StarRating(
-                  value: _myValue,
+                  value: _myValue > 0 ? _myValue : _average.round(),
                   average: _average,
                   readOnly: _setting,
                   onChanged: _setRating,
                 ),
-                if (!_authed)
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8),
-                    child: Text(
-                      '(${s.loginToRate})',
-                      style: const TextStyle(color: Colors.grey),
-                    ),
-                  ),
+                
               ],
             ),
 

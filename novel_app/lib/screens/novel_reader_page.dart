@@ -93,6 +93,23 @@ class _NovelReaderPageState extends State<NovelReaderPage> {
       if (res.statusCode == 200) {
         final novelData = jsonDecode(res.body);
         final chapters = novelData['chapters'] as List<dynamic>? ?? [];
+        
+        chapters.sort((a, b) {
+          int extractChapterNumber(String title) {
+            final match = RegExp(r'Chapter\s+(\d+)', caseSensitive: false)
+                .firstMatch(title);
+            if (match != null) {
+              return int.tryParse(match.group(1) ?? '') ?? 0;
+            }
+            return 0;
+          }
+
+          final aNum = extractChapterNumber(a['title'] ?? '');
+          final bNum = extractChapterNumber(b['title'] ?? '');
+
+          return aNum.compareTo(bNum);
+        });
+
 
         setState(() {
           _chapters = chapters;

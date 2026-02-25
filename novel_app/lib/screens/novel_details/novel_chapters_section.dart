@@ -35,8 +35,28 @@ class _NovelChaptersSectionState extends State<NovelChaptersSection> {
       final res = await http.get(uri);
       if (res.statusCode == 200) {
         final data = jsonDecode(res.body);
+
         setState(() {
           _chapters = data['chapters'] ?? [];
+
+          _chapters.sort((a, b) {
+            int extractChapterNumber(String title) {
+              final match = RegExp(r'Chapter\s+(\d+)', caseSensitive: false)
+                  .firstMatch(title);
+              if (match != null) {
+                return int.tryParse(match.group(1) ?? '') ?? 0;
+              }
+              return 0;
+            }
+
+            final aTitle = a['title'] ?? '';
+            final bTitle = b['title'] ?? '';
+
+            final aNum = extractChapterNumber(aTitle);
+            final bNum = extractChapterNumber(bTitle);
+
+            return aNum.compareTo(bNum);
+          });
         });
       }
     } catch (e) {
